@@ -1,9 +1,10 @@
 import express from "express";
 import * as bodyParser from "body-parser";
-import { TaskRoutes } from "./routes/taskRoutes";
-import { MongoDbClient } from "./mongoDbClient";
+import { TaskRoutes } from "./routes/task-routes";
+import { MongoDbClient } from "./mongodb-client";
 import jwt from "express-jwt";
 import jwks from "jwks-rsa";
+import cors from 'cors';
 
 class App {    
     public app: express.Application;
@@ -14,10 +15,11 @@ class App {
     constructor(){
         this.app = express();
         this.config();
-        this.taskRoutes.routes(this.app)
+        this.taskRoutes.routes(this.app);
     }
 
     private config(): void {
+        this.app.use(cors());
         this.app.use(bodyParser.json());      
         
         const jwtCheck = jwt({
@@ -32,7 +34,7 @@ class App {
             algorithms: ['RS256']
         });
         
-        this.app.use(jwtCheck);
+        this.app.use(jwtCheck);        
     }
 }
 
