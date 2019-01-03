@@ -7,7 +7,10 @@ export class ProblemDetail {
     status: number;
     extensions?: Map<string, object>;
 
-    constructor(init?: Partial<ProblemDetail>){
-        Object.assign(this, init);
+    constructor(type: string, title: string, detail: string, status: number){
+        this.type = type;
+        this.title = title;
+        this.detail = detail;
+        this.status = status;        
     }
 }

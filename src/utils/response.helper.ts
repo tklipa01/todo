@@ -15,12 +15,7 @@ export function okNoContentResponse(res: Response) {
 
 export function badRequestResponse(res: Response, detail: string) {
     const statusCode = 400;
-    let problemDetail = new ProblemDetail({
-        title: "Invalid Request",
-        type: `https://httpstatuses.com/${statusCode}`,
-        detail: detail,
-        status: statusCode
-    });
+    let problemDetail = new ProblemDetail("Invalid Request", `https://httpstatuses.com/${statusCode}`, detail, statusCode);
     res.status(statusCode).type('application/problem+json').json(problemDetail);
 }
 
