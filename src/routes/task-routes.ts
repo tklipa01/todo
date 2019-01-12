@@ -3,10 +3,8 @@ import { Request, Response } from "express";
 import { IMongoDbClient } from "../mongodb-client";
 import { Db, ObjectId } from "mongodb";
 import { Task } from "../models/task";
-import { validateRequestBodyExists, validateRequestParams } from "../utils/request.helpers";
-import { okResponse, createdResponse, badRequestResponse, okNoContentResponse } from "../utils/response.helper";
-import { BadRequestError } from "../errors/bad-request.error";
-import { truncate } from "fs";
+import { validateRequestBodyExists, validateRequestBodyParams, validateRequestParams } from "../utils/request.helpers";
+import { okResponse, createdResponse,  okNoContentResponse } from "../utils/response.helper";
 
 export class TaskRoutes {    
 
@@ -46,6 +44,7 @@ export class TaskRoutes {
         app.route('/tasks').post((req: Request, res: Response) => {
             this.dao.execute(res, async (db: Db) => {
                 validateRequestBodyExists(req);
+                validateRequestBodyParams(req, "userId", "createdOn");
                 let task = new Task(req.body);                
                 let result = await db.collection("Task").insertOne(task);
                 task._id = result.insertedId;
